@@ -13,9 +13,8 @@ function App() {
           <Route path="/chat">
             <h1>I am the chatpage</h1>
           </Route>
-          <TinderCards />
           <Route path="/">
-            <h1>I am the homepage</h1>
+            <TinderCards />
           </Route>
         </Switch>
         {/* Tidner cards */}

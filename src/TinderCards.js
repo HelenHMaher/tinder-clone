@@ -25,12 +25,16 @@ function TinderCards() {
       <h2>TinderCards</h2>
 
       {movies.map((movie) => (
-        <TinderCard className="swipe" key={movie.name}>
+        <TinderCard
+          className="swipe"
+          key={movie.title}
+          preventSwipe={["up", "down"]}
+        >
           <div
             style={{ backgroundImage: `url(${movie.url})` }}
             className="card"
           >
-            <h3>{movie.name}</h3>
+            <h3>{movie.title}</h3>
           </div>
         </TinderCard>
       ))}
