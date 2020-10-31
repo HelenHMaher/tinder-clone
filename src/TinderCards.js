@@ -1,43 +1,41 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TinderCard from "react-tinder-card";
+import database from "./firebase";
+import "./TinderCards.css";
 
 function TinderCards() {
-  const [movies, setMovies] = useState([
-    {
-      title: "Old Boy",
-      url:
-        "https://movieswithaplottwist.com/wp-content/uploads/2016/04/old-boy-movie-poster.jpg",
-    },
-    {
-      title: "12 Angry Men",
-      url:
-        "https://tvguide1.cbsistatic.com/rovi/showcards/movie/121377/thumbs/16796900_1300x1733.jpg",
-    },
-    {
-      title: "Peter and the Wolf",
-      url:
-        "https://alchetron.com/cdn/Peter-and-the-Wolf-1946-film-images-d487e498-4135-443a-8f80-b90bbf3ad47.jpg",
-    },
-  ]);
+  const [movies, setMovies] = useState([]);
+
+  useEffect(() => {
+    const unsubscribe = database
+      .collection("movies")
+      .onSnapshot((snapshot) =>
+        setMovies(snapshot.docs.map((doc) => doc.data()))
+      );
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   return (
     <div>
-      <h2>TinderCards</h2>
-
-      {movies.map((movie) => (
-        <TinderCard
-          className="swipe"
-          key={movie.title}
-          preventSwipe={["up", "down"]}
-        >
-          <div
-            style={{ backgroundImage: `url(${movie.url})` }}
-            className="card"
+      <div className="tinderCards__cardContainer">
+        {movies.map((movie) => (
+          <TinderCard
+            className="swipe"
+            key={movie.title}
+            preventSwipe={["up", "down"]}
           >
-            <h3>{movie.title}</h3>
-          </div>
-        </TinderCard>
-      ))}
+            <div
+              style={{ backgroundImage: `url(${movie.url})` }}
+              className="card"
+            >
+              <h3>{movie.title}</h3>
+            </div>
+          </TinderCard>
+        ))}
+      </div>
     </div>
   );
 }
